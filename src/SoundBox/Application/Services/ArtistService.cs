@@ -1,4 +1,5 @@
 ﻿using SoundBox.Application.Contracts;
+using SoundBox.Application.Models;
 using SoundBox.Infrastructure.Persistence.DataModel;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,13 @@ public class ArtistService : IArtistService
         _db = db;
     }
 
-    public IList<Artist> GetAll()
+    public IList<ArtistDto> GetAll()
     {
-        return _db.Artists.ToList();
+        return _db.Artists
+            .Select(a => new ArtistDto
+            {
+                ArtistId = a.ArtistId,
+                Name = a.Name
+            }).ToList();
     }
 }
