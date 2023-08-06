@@ -17,6 +17,13 @@ public class ArtistService : IArtistService
         _db = db;
     }
 
+    public void Create(ArtistCreateDto model)
+    {
+        //TODO: Validation
+        _db.Artists.Add(new Artist { Name = model.Name });
+        _db.SaveChanges();
+    }
+
     public IList<ArtistDto> GetAll()
     {
         return _db.Artists
@@ -25,5 +32,31 @@ public class ArtistService : IArtistService
                 ArtistId = a.ArtistId,
                 Name = a.Name
             }).ToList();
+    }
+
+    public ArtistDto GetById(long id)
+    {
+        var artist = _db.Artists.Find(id);
+        //TODO: check if artist null
+        return new ArtistDto { ArtistId=artist.ArtistId, Name=artist.Name };
+    }
+
+    public void Remove(ArtistRemoveDto model)
+    {
+        var artist = _db.Artists.Find(model.Id);
+
+        //TODO: Null Check
+
+        _db.Artists.Remove(artist);
+        _db.SaveChanges();
+    }
+
+    public void Update(ArtistDto model)
+    {
+        var artist = _db.Artists.Find(model.ArtistId);
+
+        //TODO: Null Check
+        artist.Name = model.Name;
+        _db.SaveChanges();
     }
 }

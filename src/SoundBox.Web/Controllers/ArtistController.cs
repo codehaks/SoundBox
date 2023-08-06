@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SoundBox.Application.Contracts;
+using SoundBox.Application.Models;
 
 namespace SoundBox.Web.Controllers;
 //[Route("api/[controller]")]
@@ -20,4 +21,37 @@ public class ArtistController : ControllerBase
         var model=_artistService.GetAll();
         return Ok(model);
     }
+
+    [Route("api/artist/{id}")]
+    public ArtistDto GetById(long id)
+    {
+        var model = _artistService.GetById(id);
+        return model; //Ok(model);
+    }
+
+    [HttpPost]
+    [Route("api/artist")]
+    public IActionResult AddArtist([FromBody] ArtistCreateDto model)
+    {
+       _artistService.Create(model);
+        return Ok();
+    }
+
+    [HttpDelete]
+    [Route("api/artist")]
+    public IActionResult RemoveArtist([FromBody] ArtistRemoveDto model)
+    {
+        _artistService.Remove(model);
+        return Ok();
+    }
+
+    [HttpPut]
+    [Route("api/artist")]
+    public IActionResult UpdateArtist([FromBody] ArtistDto model)
+    {
+        _artistService.Update(model);
+        return Ok();
+    }
 }
+
+
